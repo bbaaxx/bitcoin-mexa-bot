@@ -1,0 +1,37 @@
+{
+  "name": "bitcoin-mexa-bot",
+  "version": "1.0.0",
+  "description": "A bot that talks to the Bitso API and you",
+  "author": "Eduardo M",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "url": "https://glitch.com/edit/#!/welcome-project"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "lint": "jshint --exclude node_modules .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0-beta.37",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.37",
+    "@babel/preset-env": "^7.0.0-beta.37",
+    "@babel/register": "^7.0.0-beta.37",
+    "camo": "^0.12.3",
+    "co": "^4.6.0",
+    "kcors": "^2.2.1",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.3.0",
+    "koa-static": "^4.0.2",
+    "nedb": "^1.8.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
+    "socket.io": "^2.0.4"
+  },
+  "engines": {
+    "node": "8.9.4"
+  }
+}
