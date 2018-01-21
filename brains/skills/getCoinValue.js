@@ -1,1 +1,1 @@
-export default (major, minor?) => {};
+export default (major, minor) => {};

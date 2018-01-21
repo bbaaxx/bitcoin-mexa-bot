@@ -9,4 +9,4 @@ const skills = {
 const doIKnowHowToDoThis = intent => Object.keys(skills).find(intent);
 
 
-export doIKnowHowToDoThis;
+export default { doIKnowHowToDoThis };
