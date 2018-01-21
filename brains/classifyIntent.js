@@ -1,5 +1,5 @@
 import getRcon from '../server/rcon';
-import { doIKnowHowToDoThis } from './skillManager';
+import { doIKnowHowToDoThis } from './skills/skillManager';
 let rcon;
 
 try {
