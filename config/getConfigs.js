@@ -7,5 +7,5 @@ export function getRequiredVar(key) {
   }
 }
 
-export default (requiredVars = []) => 
+export default (requiredVars = []) =>
   requiredVars.map(getRequiredVar).reduce((acc, ev) => ({ ...acc, ...ev }), {});

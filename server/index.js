@@ -12,11 +12,11 @@ import { registerConnLogger } from './sockets';
 
 import getConfigs from '../config/getConfigs';
 
-const appConfig = getConfigs([ 
+const appConfig = getConfigs([
   'MESSENGER_APP_SECRET',
   'MESSENGER_VALIDATION_TOKEN',
   'MESSENGER_PAGE_ACCESS_TOKEN',
-  'SERVER_URL',
+  'SERVER_URL'
 ]);
 
 const app = new Koa();
@@ -39,12 +39,14 @@ app.use(router.allowedMethods());
 
 server.listen(process.env.PORT, () => {
   let addr;
-  try { 
+  try {
     addr = server.address();
     registerConnLogger(io);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log(`Koa server started at port ${addr.port}`);
   }
-  catch(err) { console.log(err); }
-  finally { console.log(`Koa server started at port ${addr.port}`); }
 });
 
 export default app;

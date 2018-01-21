@@ -13,5 +13,7 @@ export default function handleMessageRead(event, ctx) {
   var watermark = event.read.watermark;
   var sequenceNumber = event.read.seq;
 
-  ctx.rcon(`Received message read event for watermark ${watermark} and sequence number ${sequenceNumber}`);
+  ctx.rcon(
+    `Received message read event for watermark ${watermark} and sequence number ${sequenceNumber}`
+  );
 }

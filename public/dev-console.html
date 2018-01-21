@@ -7,37 +7,37 @@
     <p>Live Connections: [[liveConnections]]</p>
     <p>Total Connections: [[totalConnections]]</p>
     <div id="consoleOut">
-      
+
     </div>
   </template>
   <script>
-    class DevConsole extends Polymer.Element {
-      static get is() {
-        return "dev-console";
-      }
-      static get properties() {
-        return {
-          totalConnections: Number,
-          liveConnections: Number
-        };
-      }
-      connectedCallback() {
-        super.connectedCallback();
-        let socket = io();
-        const consoleOutEle = this.$.consoleOut;
-        
-        socket.on('count', data => {
-          this.liveConnections = data.live;
-          this.totalConnections = data.total;
-        });
-        socket.on('rcon-out', data => {
-          const newEntry = document.createElement('p');
-          newEntry.innerHTML = JSON.stringify(data);
-          consoleOutEle.appendChild(newEntry);
-        });
-      }
-    }
-    
-    customElements.define(DevConsole.is, DevConsole);
-  </script>
+  class DevConsole extends Polymer.Element {
+  static get is() {
+    return 'dev-console';
+  }
+  static get properties() {
+    return {
+      totalConnections: Number,
+      liveConnections: Number
+    };
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    let socket = io();
+    const consoleOutEle = this.$.consoleOut;
+
+    socket.on('count', data => {
+      this.liveConnections = data.live;
+      this.totalConnections = data.total;
+    });
+    socket.on('rcon-out', data => {
+      const newEntry = document.createElement('p');
+      newEntry.innerHTML = JSON.stringify(data);
+      consoleOutEle.appendChild(newEntry);
+    });
+  }
+}
+
+customElements.define(DevConsole.is, DevConsole);
+</script>
 </dom-module>

@@ -18,9 +18,11 @@ export default function handleAuthentication(event, ctx) {
   // a way to do account linking when the user clicks the 'Send to Messenger'
   // plugin.
   const passThroughParam = event.optin.ref;
-  ctx.rcon(`Received authentication for user ${senderID} and page ${recipientID} with passtrough param ${passThroughParam} at ${timeOfAuth}`);
+  ctx.rcon(
+    `Received authentication for user ${senderID} and page ${recipientID} with passtrough param ${passThroughParam} at ${timeOfAuth}`
+  );
 
   // When an authentication is received, we'll send a message back to the sender
   // to let them know it was successful.
-  sendTextMessage(senderID, "Authentication successful");
+  sendTextMessage(senderID, 'Authentication successful');
 }

@@ -12,7 +12,7 @@ export default function handleDeliveryConfirmation(event, ctx) {
   const messageIDs = delivery.mids;
   const watermark = delivery.watermark;
   const sequenceNumber = delivery.seq;
-  
+
   if (messageIDs) {
     messageIDs.forEach(function(messageID) {
       ctx.rcon(`Received delivery confirmation for message ID: ${messageID}`);

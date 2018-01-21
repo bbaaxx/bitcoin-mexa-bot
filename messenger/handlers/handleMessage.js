@@ -22,7 +22,7 @@ import * as sapiex from '../send/examples';
 export default function handleMessage(event, ctx) {
   ctx.rcon('Message handler says HI !!!!!!!');
   ctx.rcon(event);
-  
+
   const senderID = event.sender.id;
   const recipientID = event.recipient.id;
   const timeOfMessage = event.timestamp;
@@ -30,7 +30,7 @@ export default function handleMessage(event, ctx) {
 
   // ctx.rcon(`Received message for user ${senderID} and page ${recipientID} at ${timeOfMessage} with message:`);
   // ctx.rcon(message);
-  
+
   const isEcho = message.is_echo;
   const messageId = message.mid;
   const appId = message.app_id;
@@ -46,26 +46,29 @@ export default function handleMessage(event, ctx) {
     return ctx.rcon(
       `Received echo for message ${messageId} and app ${appId} with metadata ${metadata}`
     );
-  } 
-  else if (quickReply) {
+  } else if (quickReply) {
     const quickReplyPayload = quickReply.payload;
-    ctx.rcon(`Quick reply for message ${messageId} with payload ${quickReplyPayload}`);
-    return sendTextMessage(senderID, "Quick reply tapped");
+    ctx.rcon(
+      `Quick reply for message ${messageId} with payload ${quickReplyPayload}`
+    );
+    return sendTextMessage(senderID, 'Quick reply tapped');
   } else if (messageAttachments) {
-    return sendTextMessage(senderID, "Message with attachment received");
+    return sendTextMessage(senderID, 'Message with attachment received');
   }
-  
+
   const reaction = classifyIntent(message);
-  
+
   ctx.rcon('----> reaction <-----');
   ctx.rcon(reaction);
-  
+
   if (messageText) {
-    
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
+    switch (messageText
+      .replace(/[^\w\s]/gi, '')
+      .trim()
+      .toLowerCase()) {
       case 'hello':
       case 'hi':
         return sapiex.sendHiMessage(senderID);

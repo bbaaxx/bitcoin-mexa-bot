@@ -10,7 +10,7 @@ export default function sendTextMessage(recipientId, messageText) {
     },
     message: {
       text: messageText,
-      metadata: "DEVELOPER_DEFINED_METADATA"
+      metadata: 'DEVELOPER_DEFINED_METADATA'
     }
   };
 

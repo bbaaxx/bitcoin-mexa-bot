@@ -9,23 +9,23 @@ import crypto from 'crypto';
  *
  */
 export default () => async (ctx, next) => {
-  const errorMsg = 'FATAL: Couldn\'t validate the request origin.';
+  const errorMsg = "FATAL: Couldn't validate the request origin.";
   const signature = ctx.request.header['x-hub-signature'];
   const { rawBody } = ctx.request;
-  
+
   if (typeof signature === 'undefined' || typeof rawBody === 'undefined') {
-    throw new Error(errorMsg + ' Request signature or body missing' );
+    throw new Error(errorMsg + ' Request signature or body missing');
   }
-  
+
   const { appConfig } = ctx.state;
-  const [ _, sigHash ] = signature.split('=');
+  const [_, sigHash] = signature.split('=');
   const reqBuffer = Buffer.from(rawBody);
   const expectedHash = crypto
     .createHmac('sha1', appConfig.MESSENGER_APP_SECRET)
     .update(reqBuffer)
     .digest('hex');
-  if (sigHash !== expectedHash ) {
+  if (sigHash !== expectedHash) {
     throw new Error(errorMsg);
   }
   await next();
-}
+};

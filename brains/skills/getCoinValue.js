@@ -1,3 +1,1 @@
-export default symbol => {
-  
-};
+export default symbol => {};

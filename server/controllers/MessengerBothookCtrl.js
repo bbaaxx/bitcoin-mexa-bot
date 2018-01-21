@@ -13,25 +13,25 @@ function inferActionType(messagingEvent) {
   let type = 'unknown';
   const eventKeys = Object.keys(messagingEvent);
   const messageTypes = Object.keys(handlerMapping);
-  
+
   for (let i = 0; i < messageTypes.length; i += 1) {
     if (eventKeys.find(key => Boolean(key === messageTypes[i]))) {
       type = messageTypes[i];
-    };
+    }
   }
-  
+
   return {
     type,
     messagingEvent
   };
 }
- 
+
 const messagingEventProcessor = ctx => messagingEvent => {
   const event = inferActionType(messagingEvent);
   if (Object.keys(handlerMapping).includes(event.type)) {
     handle[handlerMapping[event.type]](messagingEvent, ctx);
   } else {
-    console.error("Bothook received unknown messagingEvent: ", messagingEvent);
+    console.error('Bothook received unknown messagingEvent: ', messagingEvent);
   }
 };
 
@@ -47,7 +47,10 @@ export default {
   async get(ctx, next) {
     const { query } = ctx.request;
     const { appConfig } = ctx.state;
-    if (query['hub.mode'] === 'subscribe' && query['hub.verify_token'] === appConfig.MESSENGER_VALIDATION_TOKEN) {
+    if (
+      query['hub.mode'] === 'subscribe' &&
+      query['hub.verify_token'] === appConfig.MESSENGER_VALIDATION_TOKEN
+    ) {
       ctx.body = query['hub.challenge'];
     } else {
       ctx.throw(403, '403 Error: not allowed');
