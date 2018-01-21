@@ -1,0 +1,8 @@
+{
+  "name": "Bitcoin Mexa Bot",
+  "description": "A bot that talks to the Bitso API and you.",
+  "repository": "https://github.com/bbaaxx/bitcoin-mexa-bot",
+  "logo": "",
+  "keywords": ["node", "koa", "heroku"],
+  "image": "heroku/nodejs"
+}

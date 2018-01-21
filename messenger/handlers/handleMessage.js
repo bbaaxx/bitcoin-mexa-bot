@@ -12,12 +12,6 @@ import * as sapiex from '../send/examples';
  * object format can vary depending on the kind of message that was received.
  * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
  *
- * For this example, we're going to echo any text that we get. If we get some
- * special keywords ('button', 'generic', 'receipt'), then we'll send back
- * examples of those bubbles to illustrate the special message bubbles we've
- * created. If we receive a message with an attachment (image, video, audio),
- * then we'll simply confirm that we've received the attachment.
- *
  */
 export default function handleMessage(event, ctx) {
   ctx.rcon('Message handler says HI !!!!!!!');
@@ -43,12 +37,13 @@ export default function handleMessage(event, ctx) {
 
   if (isEcho) {
     // Just logging message echoes to console
-    return ctx.rcon(
+    console.log(
       `Received echo for message ${messageId} and app ${appId} with metadata ${metadata}`
     );
+    return;
   } else if (quickReply) {
     const quickReplyPayload = quickReply.payload;
-    ctx.rcon(
+    console.log(
       `Quick reply for message ${messageId} with payload ${quickReplyPayload}`
     );
     return sendTextMessage(senderID, 'Quick reply tapped');

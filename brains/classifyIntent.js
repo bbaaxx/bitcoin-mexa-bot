@@ -18,12 +18,13 @@ const nlpMessageToAction = message => {
   const { entities } = message.nlp;
   const { intent } = entities;
 
-  // intent is an array but for now I am only
-  // going to use the first element.
+  // intent is an array but for now I am
+  // limiting the use case to the first element.
   const assistedIntent = intent[0];
+  console.log(assistedIntent);
   return {
     type: assistedIntent.value,
-    payload: 'not now!'
+    payload: message
   };
 };
 
