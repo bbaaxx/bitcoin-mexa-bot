@@ -1,5 +1,5 @@
 import getRcon from '../server/rcon';
-
+import { doIKnowHowToDoThis } from './skillManager';
 let rcon;
 
 try {
@@ -21,7 +21,10 @@ const nlpMessageToAction = message => {
   // intent is an array but for now I am
   // limiting the use case to the first element.
   const assistedIntent = intent[0];
-  console.log(assistedIntent);
+  // should check if we have a handler for that intent or use a
+  // I-dont-have-a-handler-for-that handler
+  console.log('do I?', doIKnowHowToDoThis(assistedIntent));
+
   return {
     type: assistedIntent.value,
     payload: message
