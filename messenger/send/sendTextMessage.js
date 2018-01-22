@@ -3,15 +3,19 @@ import callSendAPI from './callSendAPI';
  * Send a text message using the Send API.
  *
  */
-export default function sendTextMessage(recipientId, messageText) {
+export default function sendTextMessage(
+  recipientId,
+  messageText,
+  metadata = '',
+) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       text: messageText,
-      metadata: 'DEVELOPER_DEFINED_METADATA'
-    }
+      metadata: metadata,
+    },
   };
 
   callSendAPI(messageData);

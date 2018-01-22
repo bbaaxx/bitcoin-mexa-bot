@@ -16,7 +16,7 @@ const appConfig = getConfigs([
   'MESSENGER_APP_SECRET',
   'MESSENGER_VALIDATION_TOKEN',
   'MESSENGER_PAGE_ACCESS_TOKEN',
-  'SERVER_URL'
+  'SERVER_URL',
 ]);
 
 const app = new Koa();
@@ -28,7 +28,7 @@ app.use(logger());
 app.use(async (ctx, next) => {
   ctx.db = database;
   ctx.state.appConfig = appConfig;
-  ctx.rcon = rcon;
+  ctx.io = io;
   await next();
 });
 app.use(cors());

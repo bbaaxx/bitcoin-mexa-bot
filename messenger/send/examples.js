@@ -21,11 +21,6 @@ export default function handleMessage(event, ctx) {
   const timeOfMessage = event.timestamp;
   const message = event.message;
 
-  ctx.rcon(
-    `Received message for user ${senderID} and page ${recipientID} at ${timeOfMessage} with message:`
-  );
-  ctx.rcon(message);
-
   const isEcho = message.is_echo;
   const messageId = message.mid;
   const appId = message.app_id;
@@ -38,14 +33,11 @@ export default function handleMessage(event, ctx) {
 
   if (isEcho) {
     // Just logging message echoes to console
-    return ctx.rcon(
-      `Received echo for message ${messageId} and app ${appId} with metadata ${metadata}`
+    return console.log(
+      `Received echo for message ${messageId} and app ${appId} with metadata ${metadata}`,
     );
   } else if (quickReply) {
     const quickReplyPayload = quickReply.payload;
-    ctx.rcon(
-      `Quick reply for message ${messageId} with payload ${quickReplyPayload}`
-    );
     return sendTextMessage(senderID, 'Quick reply tapped');
   }
 
@@ -105,7 +97,7 @@ export function requiresServerURL(next, [recipientId, ...args]) {
   if (process.env.SERVER_URL === 'to_be_set_manually') {
     var messageData = {
       recipient: {
-        id: recipientId
+        id: recipientId,
       },
       message: {
         text: `
@@ -114,8 +106,8 @@ We have static resources like images and videos available to test, but you need 
 2. Paste the result you got from running "lt —port 5000" into your config/default.json file as the "serverURL".
 3. Re-run "node app.js"
 Once you've finished these steps, try typing “video” or “image”.
-        `
-      }
+        `,
+      },
     };
 
     callSendAPI(messageData);
@@ -127,7 +119,7 @@ Once you've finished these steps, try typing “video” or “image”.
 export function sendHiMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       text: `
@@ -136,8 +128,8 @@ Congrats on setting up your Messenger Bot!
 Right now, your bot can only respond to a few words. Try out "quick reply", "typing on", "button", or "image" to see how they work. You'll find a complete list of these commands in the "app.js" file. Anything else you type will just be mirrored until you create additional commands.
 
 For more details on how to create commands, go to https://developers.facebook.com/docs/messenger-platform/reference/send-api.
-      `
-    }
+      `,
+    },
   };
 
   callSendAPI(messageData);
@@ -150,7 +142,7 @@ For more details on how to create commands, go to https://developers.facebook.co
 export function sendImageMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
@@ -158,10 +150,10 @@ export function sendImageMessage(recipientId) {
         payload: {
           // url: process.env.SERVER_URL + "/assets/rift.png",
           url:
-            'https://cdn.glitch.com/21921d85-0a5d-4362-adfa-3830f1212660%2Fdevran1.jpg?1516147145840'
-        }
-      }
-    }
+            'https://cdn.glitch.com/21921d85-0a5d-4362-adfa-3830f1212660%2Fdevran1.jpg?1516147145840',
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -174,16 +166,16 @@ export function sendImageMessage(recipientId) {
 export function sendGifMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
         type: 'image',
         payload: {
-          url: process.env.SERVER_URL + '/assets/instagram_logo.gif'
-        }
-      }
-    }
+          url: process.env.SERVER_URL + '/assets/instagram_logo.gif',
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -196,16 +188,16 @@ export function sendGifMessage(recipientId) {
 export function sendAudioMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
         type: 'audio',
         payload: {
-          url: process.env.SERVER_URL + '/assets/sample.mp3'
-        }
-      }
-    }
+          url: process.env.SERVER_URL + '/assets/sample.mp3',
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -218,16 +210,16 @@ export function sendAudioMessage(recipientId) {
 export function sendVideoMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
         type: 'video',
         payload: {
-          url: process.env.SERVER_URL + '/assets/allofus480.mov'
-        }
-      }
-    }
+          url: process.env.SERVER_URL + '/assets/allofus480.mov',
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -240,16 +232,16 @@ export function sendVideoMessage(recipientId) {
 export function sendFileMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
         type: 'file',
         payload: {
-          url: process.env.SERVER_URL + '/assets/test.txt'
-        }
-      }
-    }
+          url: process.env.SERVER_URL + '/assets/test.txt',
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -262,7 +254,7 @@ export function sendFileMessage(recipientId) {
 export function sendButtonMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
@@ -274,22 +266,22 @@ export function sendButtonMessage(recipientId) {
             {
               type: 'web_url',
               url: 'https://www.oculus.com/en-us/rift/',
-              title: 'Open Web URL'
+              title: 'Open Web URL',
             },
             {
               type: 'postback',
               title: 'Trigger Postback',
-              payload: 'DEVELOPER_DEFINED_PAYLOAD'
+              payload: 'DEVELOPER_DEFINED_PAYLOAD',
             },
             {
               type: 'phone_number',
               title: 'Call Phone Number',
-              payload: '+16505551234'
-            }
-          ]
-        }
-      }
-    }
+              payload: '+16505551234',
+            },
+          ],
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -302,7 +294,7 @@ export function sendButtonMessage(recipientId) {
 export function sendGenericMessage(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
@@ -319,14 +311,14 @@ export function sendGenericMessage(recipientId) {
                 {
                   type: 'web_url',
                   url: 'https://www.oculus.com/en-us/rift/',
-                  title: 'Open Web URL'
+                  title: 'Open Web URL',
                 },
                 {
                   type: 'postback',
                   title: 'Call Postback',
-                  payload: 'Payload for first bubble'
-                }
-              ]
+                  payload: 'Payload for first bubble',
+                },
+              ],
             },
             {
               title: 'touch',
@@ -337,19 +329,19 @@ export function sendGenericMessage(recipientId) {
                 {
                   type: 'web_url',
                   url: 'https://www.oculus.com/en-us/touch/',
-                  title: 'Open Web URL'
+                  title: 'Open Web URL',
                 },
                 {
                   type: 'postback',
                   title: 'Call Postback',
-                  payload: 'Payload for second bubble'
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
+                  payload: 'Payload for second bubble',
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -365,7 +357,7 @@ export function sendReceiptMessage(recipientId) {
 
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
@@ -383,7 +375,7 @@ export function sendReceiptMessage(recipientId) {
               subtitle: 'Includes: headset, sensor, remote',
               quantity: 1,
               price: 599.0,
-              currency: 'USD'
+              currency: 'USD',
               // image_url: process.env.SERVER_URL + "/assets/riftsq.png"
             },
             {
@@ -391,9 +383,9 @@ export function sendReceiptMessage(recipientId) {
               subtitle: 'Frost White',
               quantity: 1,
               price: 99.99,
-              currency: 'USD'
+              currency: 'USD',
               // image_url: process.env.SERVER_URL + "/assets/gearvrsq.png"
-            }
+            },
           ],
           address: {
             street_1: '1 Hacker Way',
@@ -401,27 +393,27 @@ export function sendReceiptMessage(recipientId) {
             city: 'Menlo Park',
             postal_code: '94025',
             state: 'CA',
-            country: 'US'
+            country: 'US',
           },
           summary: {
             subtotal: 698.99,
             shipping_cost: 20.0,
             total_tax: 57.67,
-            total_cost: 626.66
+            total_cost: 626.66,
           },
           adjustments: [
             {
               name: 'New Customer Discount',
-              amount: -50
+              amount: -50,
             },
             {
               name: '$100 Off Coupon',
-              amount: -100
-            }
-          ]
-        }
-      }
-    }
+              amount: -100,
+            },
+          ],
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);
@@ -434,7 +426,7 @@ export function sendReceiptMessage(recipientId) {
 export function sendQuickReply(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       text: "What's your favorite movie genre?",
@@ -442,20 +434,20 @@ export function sendQuickReply(recipientId) {
         {
           content_type: 'text',
           title: 'Action',
-          payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION'
+          payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION',
         },
         {
           content_type: 'text',
           title: 'Comedy',
-          payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY'
+          payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY',
         },
         {
           content_type: 'text',
           title: 'Drama',
-          payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA'
-        }
-      ]
-    }
+          payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA',
+        },
+      ],
+    },
   };
 
   callSendAPI(messageData);
@@ -470,9 +462,9 @@ export function sendReadReceipt(recipientId) {
 
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
-    sender_action: 'mark_seen'
+    sender_action: 'mark_seen',
   };
 
   callSendAPI(messageData);
@@ -487,9 +479,9 @@ export function sendTypingOn(recipientId) {
 
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
-    sender_action: 'typing_on'
+    sender_action: 'typing_on',
   };
 
   callSendAPI(messageData);
@@ -504,9 +496,9 @@ export function sendTypingOff(recipientId) {
 
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
-    sender_action: 'typing_off'
+    sender_action: 'typing_off',
   };
 
   callSendAPI(messageData);
@@ -519,7 +511,7 @@ export function sendTypingOff(recipientId) {
 export function sendAccountLinking(recipientId) {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: recipientId,
     },
     message: {
       attachment: {
@@ -530,12 +522,12 @@ export function sendAccountLinking(recipientId) {
           buttons: [
             {
               type: 'account_link',
-              url: process.env.SERVER_URL + '/authorize'
-            }
-          ]
-        }
-      }
-    }
+              url: process.env.SERVER_URL + '/authorize',
+            },
+          ],
+        },
+      },
+    },
   };
 
   callSendAPI(messageData);

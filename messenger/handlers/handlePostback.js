@@ -7,7 +7,7 @@ import sendTextMessage from '../send/sendTextMessage';
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
  *
  */
-export default function receivedPostback(event, ctx) {
+export default function receivedPostback(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
@@ -16,8 +16,8 @@ export default function receivedPostback(event, ctx) {
   // button for Structured Messages.
   var payload = event.postback.payload;
 
-  ctx.rcon(
-    `Received postback for user ${senderID} and page ${recipientID} with payload ${payload} at ${timeOfPostback}`
+  console.log(
+    `Received postback for user ${senderID} and page ${recipientID} with payload ${payload} at ${timeOfPostback}`,
   );
 
   // When a postback is called, we'll send a message back to the sender to

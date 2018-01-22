@@ -10,7 +10,7 @@ export default function callSendAPI(messageData) {
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: process.env.MESSENGER_PAGE_ACCESS_TOKEN },
     method: 'POST',
-    json: messageData
+    json: messageData,
   })
     .then(response => {
       const messageId = response['message_id'];

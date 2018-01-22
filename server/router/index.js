@@ -12,7 +12,7 @@ router
   .post(
     '/messenger-bothook',
     verifyRequestSignature(),
-    MessengerBothookCtrl.post
+    MessengerBothookCtrl.post,
   )
   .get('/authorize', AuthController.get)
   .get('/*', staticServe('public'));

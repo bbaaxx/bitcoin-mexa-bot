@@ -9,7 +9,7 @@ export function registerConnLogger(io) {
 
     io.sockets.emit('count', {
       total: totalConnections,
-      live: liveConnections
+      live: liveConnections,
     });
 
     socket.on('disconnect', reason => {
@@ -17,7 +17,7 @@ export function registerConnLogger(io) {
       liveConnections -= 1;
       io.sockets.emit('count', {
         total: totalConnections,
-        live: liveConnections
+        live: liveConnections,
       });
     });
   });

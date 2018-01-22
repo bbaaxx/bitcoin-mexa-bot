@@ -5,7 +5,7 @@
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
  *
  */
-export default function handleMessageRead(event, ctx) {
+export default function handleMessageRead(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
 
@@ -13,7 +13,7 @@ export default function handleMessageRead(event, ctx) {
   var watermark = event.read.watermark;
   var sequenceNumber = event.read.seq;
 
-  ctx.rcon(
-    `Received message read event for watermark ${watermark} and sequence number ${sequenceNumber}`
+  console.log(
+    `Received message read event for watermark ${watermark} and sequence number ${sequenceNumber}`,
   );
 }

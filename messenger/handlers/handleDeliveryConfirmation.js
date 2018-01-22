@@ -5,7 +5,7 @@
  * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
  *
  */
-export default function handleDeliveryConfirmation(event, ctx) {
+export default function handleDeliveryConfirmation(event) {
   const senderID = event.sender.id;
   const recipientID = event.recipient.id;
   const delivery = event.delivery;
@@ -15,8 +15,10 @@ export default function handleDeliveryConfirmation(event, ctx) {
 
   if (messageIDs) {
     messageIDs.forEach(function(messageID) {
-      ctx.rcon(`Received delivery confirmation for message ID: ${messageID}`);
+      console.log(
+        `Received delivery confirmation for message ID: ${messageID}`,
+      );
     });
   }
-  ctx.rcon(`All messages before ${watermark} were delivered.`);
+  console.log(`All messages before ${watermark} were delivered.`);
 }

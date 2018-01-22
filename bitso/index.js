@@ -1,3 +1,1 @@
-export function getData() {
-  
-}
+export function getData() {}

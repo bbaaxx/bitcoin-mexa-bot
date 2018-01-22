@@ -1,26 +1,72 @@
 <script src="/socket.io/socket.io.js"></script>
 <link rel="import" href="https://polygit.org/components/polymer/polymer-element.html">
+<link rel="import" href="https://polygit.org/components/polymer/lib/elements/dom-repeat.html">
 
 <dom-module id="dev-console">
   <template>
-    <h3>Welcome, dev-console app user!</h3>
-    <p>Live Connections: [[liveConnections]]</p>
-    <p>Total Connections: [[totalConnections]]</p>
-    <div id="consoleOut">
+    <style>
+      .consoleOut {
+        font-family: monospace;
+        font-size: .85em
+      }
+      .consoleEntry {
+        border: 1px solid #ddd;
+        margin: 3px;
+      }
+      .consoleEntryBody {
+        padding: 0 5px;
+      }
+      .consoleEntryTitle {
+        color: red;
+        font-size: .8em;
+      }
+    </style>
 
+    <h3>Welcome, dev-console app user!</h3>
+    <div class="connMonitor">
+      <p>Live Connections: [[liveConnections]]</p>
+      <p>Total Connections: [[totalConnections]]</p>
+    </div>
+
+    <div id="consoleOut">
+      <template is="dom-repeat" items="{{consoleBuffer}}">
+        <div class="consoleEntry">
+          <div class="consoleEntryTitle">
+            entry# [[item.seq]] @ [[item.timestamp]]
+          </div>
+          <div class="consoleEntryBody">
+            [[item.body]]
+          </div>
+        </div>
+      </template>
     </div>
   </template>
+
   <script>
   class DevConsole extends Polymer.Element {
   static get is() {
     return 'dev-console';
   }
+
   static get properties() {
     return {
       totalConnections: Number,
-      liveConnections: Number
+      liveConnections: Number,
+      logCount: {
+        type: Number,
+        value: 0,
+      },
+      bufferSize: {
+        type: Number,
+        value: 15,
+      },
+      consoleBuffer: {
+        type: Array,
+        value: () => [],
+      },
     };
   }
+
   connectedCallback() {
     super.connectedCallback();
     let socket = io();
@@ -31,13 +77,24 @@
       this.totalConnections = data.total;
     });
     socket.on('rcon-out', data => {
-      const newEntry = document.createElement('p');
-      newEntry.innerHTML = JSON.stringify(data);
-      consoleOutEle.appendChild(newEntry);
+      this.updateConsole({
+        seq: this.get('logCount'),
+        timestamp: new Date().toLocaleTimeString(),
+        body: JSON.stringify(data, 2, 2),
+      });
     });
+  }
+
+  updateConsole(newEntry) {
+    this.push('consoleBuffer', newEntry);
+    this.set('logCount', this.get('logCount') + 1);
+    while (this.get('consoleBuffer').length > this.get('bufferSize')) {
+      this.shift('consoleBuffer');
+    }
   }
 }
 
 customElements.define(DevConsole.is, DevConsole);
+
 </script>
 </dom-module>

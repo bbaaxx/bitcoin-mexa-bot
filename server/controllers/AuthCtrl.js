@@ -1,7 +1,7 @@
 const getSuccessPage = (
   accountLinkingToken,
   redirectURI,
-  redirectURISuccess
+  redirectURISuccess,
 ) => `
 <html>
   <head>
@@ -36,7 +36,7 @@ export default {
     ctx.body = getSuccessPage(
       accountLinkingToken,
       redirectURI,
-      redirectURISuccess
+      redirectURISuccess,
     );
-  }
+  },
 };
