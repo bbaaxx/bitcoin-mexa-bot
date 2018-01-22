@@ -1,9 +1,8 @@
-import sendTextMessage from '../send/sendTextMessage';
-import callSendAPI from '../send/callSendAPI';
-
 import classifyIntent from '../../brains/classifyIntent';
 
-import * as sapiex from '../send/examples';
+import handleEcho from './handleEcho';
+import handleQuickReply from './handleQuickReply';
+import handleAttachment from './handleAttachment';
 
 /*
  * Message Event
@@ -13,88 +12,50 @@ import * as sapiex from '../send/examples';
  * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
  *
  */
-export default function handleMessage(event, ctx) {
-  ctx.rcon('Message handler says HI !!!!!!!');
-  ctx.rcon(event);
-
-  const senderID = event.sender.id;
-  const recipientID = event.recipient.id;
-  const timeOfMessage = event.timestamp;
-  const message = event.message;
-
-  // ctx.rcon(`Received message for user ${senderID} and page ${recipientID} at ${timeOfMessage} with message:`);
-  // ctx.rcon(message);
-
-  const isEcho = message.is_echo;
-  const messageId = message.mid;
-  const appId = message.app_id;
-  const metadata = message.metadata;
-
-  // You may get a text or attachment but not both
-  const messageText = message.text;
-  const messageAttachments = message.attachments;
-  const quickReply = message.quick_reply;
+export default function handleMessage(event) {
+  const eventData = flattenEventData(event);
+  const {
+    senderID,
+    recipientID,
+    timeOfMessage,
+    message,
+    isEcho,
+    messageId,
+    appId,
+    metadata,
+    messageText,
+    messageAttachments,
+    quickReply,
+  } = eventData;
 
   if (isEcho) {
-    // Just logging message echoes to console
-    console.log(
-      `Received echo for message ${messageId} and app ${appId} with metadata ${metadata}`
-    );
-    return;
-  } else if (quickReply) {
-    const quickReplyPayload = quickReply.payload;
-    console.log(
-      `Quick reply for message ${messageId} with payload ${quickReplyPayload}`
-    );
-    return sendTextMessage(senderID, 'Quick reply tapped');
-  } else if (messageAttachments) {
-    return sendTextMessage(senderID, 'Message with attachment received');
+    return handleEcho(eventData);
   }
-
-  const reaction = classifyIntent(message);
-
-  ctx.rcon('----> reaction <-----');
-  ctx.rcon(reaction);
-
+  if (quickReply) {
+    return handleQuickReply(eventData);
+  }
+  if (messageAttachments) {
+    return handleAttachment(eventData);
+  }
   if (messageText) {
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
-    switch (messageText
-      .replace(/[^\w\s]/gi, '')
-      .trim()
-      .toLowerCase()) {
-      case 'hello':
-      case 'hi':
-        return sapiex.sendHiMessage(senderID);
-      case 'image':
-        return sapiex.requiresServerURL(sapiex.sendImageMessage, [senderID]);
-      case 'gif':
-        return sapiex.requiresServerURL(sapiex.sendGifMessage, [senderID]);
-      case 'audio':
-        return sapiex.requiresServerURL(sapiex.sendAudioMessage, [senderID]);
-      case 'video':
-        return sapiex.requiresServerURL(sapiex.sendVideoMessage, [senderID]);
-      case 'file':
-        return sapiex.requiresServerURL(sapiex.sendFileMessage, [senderID]);
-      case 'button':
-        return sapiex.sendButtonMessage(senderID);
-      case 'generic':
-        return sapiex.requiresServerURL(sapiex.sendGenericMessage, [senderID]);
-      case 'receipt':
-        return sapiex.requiresServerURL(sapiex.sendReceiptMessage, [senderID]);
-      case 'quick reply':
-        return sapiex.sendQuickReply(senderID);
-      case 'read receipt':
-        return sapiex.sendReadReceipt(senderID);
-      case 'typing on':
-        return sapiex.sendTypingOn(senderID);
-      case 'typing off':
-        return sapiex.sendTypingOff(senderID);
-      case 'account linking':
-        return sapiex.requiresServerURL(sapiex.sendAccountLinking, [senderID]);
-      default:
-        return sendTextMessage(senderID, messageText);
-    }
+    const reaction = classifyIntent(eventData);
+    // ctx.rcon(reaction);
   }
+}
+
+function flattenEventData(event) {
+  const { message } = event;
+  return {
+    message,
+    senderID: event.sender.id,
+    recipientID: event.recipient.id,
+    timeOfMessage: event.timestamp,
+    isEcho: message.is_echo,
+    messageId: message.mid,
+    appId: message.app_id,
+    metadata: message.metadata,
+    messageText: message.text,
+    messageAttachments: message.attachments,
+    quickReply: message.quick_reply,
+  };
 }
