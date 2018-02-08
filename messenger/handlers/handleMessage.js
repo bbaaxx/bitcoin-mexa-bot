@@ -27,7 +27,6 @@ export default function handleMessage(event) {
     messageAttachments,
     quickReply,
   } = eventData;
-
   if (isEcho) {
     return handleEcho(eventData);
   }
